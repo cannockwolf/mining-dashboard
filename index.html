@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bitaxe Gamma Mining Stats</title>
+    <meta http-equiv="refresh" content="60"> <!-- Auto-refresh every 60 seconds -->
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #00ff00; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .stats { font-size: 24px; margin-bottom: 15px; }
+        .header { text-align: center; font-size: 32px; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Bitaxe Gamma Mining Dashboard</div>
+        <div id="mining-stats">
+            <!-- Stats will be loaded here via JavaScript -->
+            Loading mining data...
+        </div>
+        <div id="last-updated"></div>
+    </div>
+
+    <script>
+        async function fetchMiningData() {
+            try {
+                // Replace with your actual API endpoint
+                const response = await fetch('YOUR_POOL_API_ENDPOINT');
+                const data = await response.json();
+                
+                document.getElementById('mining-stats').innerHTML = `
+                    <div class="stats">Hashrate: ${data.hashrate}</div>
+                    <div class="stats">Active Workers: ${data.workers}</div>
+                    <div class="stats">Shares: ${data.shares}</div>
+                    <div class="stats">Estimated Earnings: ${data.estimated_earnings}</div>
+                `;
+                
+                const now = new Date();
+                document.getElementById('last-updated').innerHTML = 
+                    `Last updated: ${now.toLocaleTimeString()}`;
+            } catch (error) {
+                document.getElementById('mining-stats').innerHTML = 
+                    'Error loading mining data. Will retry shortly.';
+            }
+        }
+        
+        // Fetch data immediately and then every 60 seconds
+        fetchMiningData();
+        setInterval(fetchMiningData, 60000);
+    </script>
+</body>
+</html>
